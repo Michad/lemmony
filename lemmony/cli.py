@@ -130,7 +130,7 @@ def main():
         page = 1
         while new_results:
             time.sleep(rl_sleep)
-            actor_resp = curSession.get('https://'+local_instance+'/api/v3/community/list?type_=All&limit=50&page=' + str(page) + '&auth=' + auth_token, headers={"Content-Type": "application/json"})
+            actor_resp = curSession.get('https://'+local_instance+'/api/v3/community/list?type_=All&limit=50&page=' + str(page) + '&auth=' + auth_token, headers={"Content-Type": "application/json", "Authorization": "Bearer " + auth_token})
             if actor_resp.json()['communities'] != []:
                 for community in actor_resp.json()['communities']:
                     local_community_id_list.append(community['community']['id'])
@@ -146,7 +146,7 @@ def main():
         for idx, actor_id in enumerate(all_actors, 1):
             if actor_id not in local_community_actor_id_list:
                 time.sleep(rl_sleep)
-                actor_resp = curSession.get('https://'+local_instance+'/search?q=' + actor_id + '&type=All&listingType=All&page=1&sort=TopAll', headers={"Cookie": "jwt=" + auth_token})
+                actor_resp = curSession.get('https://'+local_instance+'/search?q=' + actor_id + '&type=All&listingType=All&page=1&sort=TopAll', headers={"Cookie": "jwt=" + auth_token, "Authorization": "Bearer " + auth_token})
                 print('\r\033[K', end='')
                 print(str(idx) + "/" + all_actor_count + " " + actor_id + ": " + str(actor_resp.status_code), end='\r')
             else:
@@ -162,7 +162,7 @@ def main():
         page = 1
         while new_results:
             time.sleep(rl_sleep)
-            actor_resp = curSession.get('https://'+local_instance+'/api/v3/community/list?type_=All&limit=50&page=' + str(page) + '&auth=' + auth_token, headers={"Content-Type": "application/json"})
+            actor_resp = curSession.get('https://'+local_instance+'/api/v3/community/list?type_=All&limit=50&page=' + str(page) + '&auth=' + auth_token, headers={"Content-Type": "application/json", "Authorization": "Bearer " + auth_token})
             if actor_resp.json()['communities'] != []:
                 for community in actor_resp.json()['communities']:
                     if community['subscribed'] == 'Subscribed':
@@ -188,7 +188,7 @@ def main():
         print('subscribing ' + username + ' to communities (this will take a while)...')
         for idx, community_id in enumerate(local_community_id_list, 1):
             time.sleep(rl_sleep)
-            sub_resp = curSession.post('https://'+local_instance+'/api/v3/community/follow', data='{"community_id": ' + str(community_id) + ', "follow": true, "auth": "' + auth_token + '"}', headers={"Cookie": "jwt=" + auth_token, "Content-Type": "application/json"})
+            sub_resp = curSession.post('https://'+local_instance+'/api/v3/community/follow', data='{"community_id": ' + str(community_id) + ', "follow": true, "auth": "' + auth_token + '"}', headers={"Cookie": "jwt=" + auth_token, "Content-Type": "application/json", "Authorization": "Bearer " + auth_token})
             print('\r\033[K', end='\r')
             print(str(idx) + "/" + local_community_count + " " + str(community_id), end="\r")
         print('\r\033[K', end='\r')
@@ -202,7 +202,7 @@ def main():
         page = 1
         while new_results:
             time.sleep(rl_sleep)
-            actor_resp = curSession.get('https://'+local_instance+'/api/v3/community/list?type_=All&limit=50&page=' + str(page) + '&auth=' + auth_token, headers={"Content-Type": "application/json"})
+            actor_resp = curSession.get('https://'+local_instance+'/api/v3/community/list?type_=All&limit=50&page=' + str(page) + '&auth=' + auth_token, headers={"Content-Type": "application/json", "Authorization": "Bearer " + auth_token})
             if actor_resp.json()['communities'] != []:
                 for community in actor_resp.json()['communities']:
                     if community['subscribed'] == 'NotSubscribed':
@@ -225,7 +225,7 @@ def main():
         print('subscribing ' + username + ' to communities (this will take a while)...')
         for idx, community_id in enumerate(local_community_id_list, 1):
             time.sleep(rl_sleep)
-            sub_resp = curSession.post('https://'+local_instance+'/api/v3/community/follow', data='{"community_id": ' + str(community_id) + ', "follow": false, "auth": "' + auth_token + '"}', headers={"Cookie": "jwt=" + auth_token, "Content-Type": "application/json"})
+            sub_resp = curSession.post('https://'+local_instance+'/api/v3/community/follow', data='{"community_id": ' + str(community_id) + ', "follow": false, "auth": "' + auth_token + '"}', headers={"Cookie": "jwt=" + auth_token, "Content-Type": "application/json", "Authorization": "Bearer " + auth_token})
             print('\r\033[K', end='\r')
             print(str(idx) + "/" + local_community_count + " " + str(community_id), end="\r")
         print('\r\033[K', end='\r')
